@@ -6,6 +6,7 @@ export const Application = ({
   setSelectedEis,
   deleteEis,
   setShowModal,
+  selectedCompany
 }) => {
   const [selectedRow, setSelectedRow] = useState(0);
 
@@ -67,6 +68,7 @@ export const Application = ({
           setSelectedRow(0);
           setShowModal(true);
         }}
+        disabled={selectedCompany === 0}
       >
         Create
       </Button>

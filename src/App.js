@@ -207,6 +207,7 @@ function App() {
             setSelectedEis={setSelectedEis}
             deleteEis={deleteEis}
             setShowModal={setShowModal}
+            selectedCompany={selectedCompany}
           />
         </Col>
       </Row>
