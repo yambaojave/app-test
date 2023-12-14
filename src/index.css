@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.custom-modal {
+  max-width: 800px; /* Set the maximum width as per your requirement */
+  margin: 0 auto; /* Center the modal horizontally */
+}

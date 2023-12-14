@@ -9,7 +9,8 @@ export const Details = ({
   setCompany,
   getHighestDomainId,
   deleteCompany,
-  getSelectedCompany
+  getSelectedCompany,
+  updateCompany
 }) => {
   const [formData, setFormData] = useState({});
 
@@ -65,6 +66,22 @@ export const Details = ({
     setCompany((prevData) => [...prevData, payload]);
     setSelectedCompany();
     
+  };
+
+  const updateDetails = () => {
+    let date = new Date().toJSON();
+
+    const payload = {
+      domain_code: formData.code,
+      domain_name: formData.name,
+      domain_bus_tradename: formData.tradename,
+      domain_bus_seller_type: formData.seller_type,
+      domain_active: formData.active,
+      default_domain: formData.default_domain,
+      oid: date,
+    };
+    
+    updateCompany(payload);
   };
 
   const resetForm = () => {
@@ -152,7 +169,7 @@ export const Details = ({
         <Button variant="success" className="mx-1" onClick={addNewCompany}>
           Create
         </Button>
-        <Button variant="primary" className="mx-1">
+        <Button variant="primary" className="mx-1" onClick={updateDetails}>
           Update
         </Button>
         <Button

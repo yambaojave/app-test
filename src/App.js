@@ -2,11 +2,14 @@ import "./App.css";
 import { Domain } from "./Component/Domain";
 import { Details } from "./Component/Details";
 import { Application } from "./Component/Application";
-import { Col, Row } from "react-bootstrap";
+import {  Col, Row } from "react-bootstrap";
 import { useState } from "react";
+import { ModalSettings } from "./Component/ModalSettings";
 
 function App() {
   const [selectedCompany, setSelectedCompany] = useState(0);
+  const [selectedEis, setSelectedEis] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const [company, setCompany] = useState([
     {
       domain_id: 1,
@@ -96,6 +99,9 @@ function App() {
     },
   ]);
 
+  /** 
+   * * Returning of next Id number for creating of a new company
+   */
   const getHighestDomainId = () => {
     if(company.length === 0){
       return 1;
@@ -108,7 +114,17 @@ function App() {
     return highestDomainIdObject.domain_id + 1;
   };
 
+  /**
+   * 
+   * * Return object of selected Company Id
+   */
+  const getSelectedCompany = () => {
+    return company.find((c) => c.domain_id === selectedCompany);
+  }
 
+  /**
+   *  * Delete item base on selected company
+   */
   const deleteCompany = () => {
     const updatedItems = company.filter(
       (c) => c.domain_id !== selectedCompany
@@ -116,14 +132,55 @@ function App() {
     setCompany(updatedItems);
   };
 
-  const getSelectedCompany = () => {
-    return company.find((c) => c.domain_id === selectedCompany);
-  }
-
+  
+  /**
+   * 
+   * * Update details of selected Company Id 
+   * * updatedValues = payload
+   */
   const updateCompany = (updatedValues) => {
     setCompany(prevData => 
       prevData.map(obj =>
-          obj.id === selectedCompany ? { ...obj, ...updatedValues } : obj
+          obj.domain_id === selectedCompany ? { ...obj, ...updatedValues } : obj
+        )
+      ); 
+  }
+
+  /**
+   * 
+   * * EIS Functions
+   */
+  const getEisByDomainId = () => {
+    return eis.filter(e => e.domain_id === selectedCompany);
+  }
+
+  const deleteEis = () => {
+    const updatedItems = eis.filter(
+      (e) => e.appId !== selectedEis
+    );
+    setEis(updatedItems);
+  }
+
+  const getEisByAppId = () => {
+    return eis.find(e => e.appId === selectedEis);
+  }
+
+  const getHighestEisId = () => {
+    if(eis.length === 0){
+      return 1;
+    }
+    
+    const highestEisIdObject = eis.reduce((max, current) => {
+      return current.appId > max.appId ? current : max;
+    });
+
+    return highestEisIdObject.appId + 1;
+  };
+
+  const updateSelectedEis = (updatedValues) => {
+    setEis(prevData => 
+      prevData.map(obj =>
+          obj.appId === selectedEis ? { ...obj, ...updatedValues } : obj
         )
       ); 
   }
@@ -145,9 +202,24 @@ function App() {
             getSelectedCompany={getSelectedCompany}
             updateCompany={updateCompany}
           />
-          <Application />
+          <Application 
+            getEisByDomainId={getEisByDomainId}
+            setSelectedEis={setSelectedEis}
+            deleteEis={deleteEis}
+            setShowModal={setShowModal}
+          />
         </Col>
       </Row>
+      <ModalSettings 
+        showModal={showModal}
+        setShowModal={setShowModal}
+        getEisByAppId={getEisByAppId}
+        selectedEis={selectedEis}
+        setEis={setEis}
+        getHighestEisId={getHighestEisId}
+        selectedCompany={selectedCompany}
+        updateSelectedEis={updateSelectedEis}
+      />
     </div>
   );
 }
